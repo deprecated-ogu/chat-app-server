@@ -1,3 +1,5 @@
+// user 관련 함수 정의
+
 const users = [];
 
 const addUser = ({ id, name, room }) => {
