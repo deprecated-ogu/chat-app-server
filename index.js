@@ -43,8 +43,9 @@ io.on('connection', (socket) => {
 
 	socket.on('sendMessage', (message, callback) => {
     const user = getUser(socket.id);	// 추가됐던 socket id로 user를 찾음
-		console.log("message : ", message);
-    io.to(user.room).emit('message', { user: user.name, text: message }); // client의 socket.on message에 전송
+		const date = new Date().toLocaleTimeString();
+		console.log(`"${message}" at ${date}`);
+    io.to(user.room).emit('message', { user: user.name, text: message, date: date }); // client의 socket.on message에 전송
 		io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room) }); // client의 socket.on message에 전송
 
     callback();
