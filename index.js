@@ -5,8 +5,6 @@ const cors = require('cors');
 const router = require('./router');
 const { addUser, removeUser, getUser, getUsersInRoom } = require('./users');
 
-
-
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server); // socket io에 서버를 전달해 tile server로 만들기 위한 코드
@@ -39,7 +37,6 @@ io.on('connect', (socket) => {
     const user = getUser(socket.id); // 추가됐던 socket id로 user를 찾음
     const date = new Date().toLocaleTimeString();
     console.log(`"${message}" at ${date}`);
-    // io.to(user.room).emit('message', { user: user.name, text: message }); // client의 socket.on message에 전송
     io.to(user.room).emit('message', { user: user.name, text: message, date: date });
 
     callback();
@@ -53,7 +50,7 @@ io.on('connect', (socket) => {
     if(user) {
       io.to(user.room).emit('message', { user: 'admin', text: `${user.name} has left.` });
       io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room)});
-      console.log("User had left!");
+      console.log("User has left!");
     }
   })
 });
